@@ -1,0 +1,50 @@
+{
+  "name": "X (Twitter) ICO Analysis Dashboard",
+  "description": "Dashboard analyzing Initial Coin Offerings (ICOs) promoted via X/Twitter on Solana.",
+  "widgets": [
+    {
+      "id": "ico_summary",
+      "name": "ICO Summary Metrics",
+      "description": "Key metrics summarizing X ICO performance (fundraising, investors, distribution).",
+      "query_id": null, 
+      "query_ref": "ico_analysis.sql - Query 1",
+      "visualization": "table",
+      "options": {
+        "columns": [
+          "token_symbol", "token_name", "twitter_handle", "launch_date",
+          "total_raised_usd", "unique_investors", "initial_holder_count", "largest_holder_percentage"
+        ]
+      }
+    },
+    {
+      "id": "fund_flow_destinations",
+      "name": "Post-ICO Fund Flow Destinations",
+      "description": "Analysis of where funds moved after the ICO fundraising period.",
+      "query_id": null, 
+      "query_ref": "ico_analysis.sql - Query 2",
+      "visualization": "bar_chart",
+      "options": {
+        "x_column": "destination_type",
+        "y_column": "total_usd_flow",
+        "group_by": "destination_label",
+        "title": "Top Destinations for Post-ICO Funds (USD)"
+      }
+    },
+    {
+      "id": "fundraising_timeline",
+      "name": "Fundraising Timeline (Example)",
+      "description": "Daily fundraising trend for a selected ICO.",
+      "query_id": null, 
+      "query_ref": "ico_analysis.sql - Query 3",
+      "visualization": "line_chart",
+      "options": {
+        "x_column": "fundraising_day",
+        "y_column": "daily_raised_usd",
+        "title": "Daily Funds Raised (USD) - Requires Token Parameter"
+      },
+      "parameters": [
+        { "key": "token_symbol", "type": "text", "value": "XTOKEN1" }
+      ]
+    }
+  ]
+}

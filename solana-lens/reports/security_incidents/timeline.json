@@ -1,0 +1,98 @@
+[
+  {
+    "date": "2022-02-02",
+    "name": "Wormhole Bridge Exploit",
+    "type": "Bridge Exploit",
+    "loss_usd": 326000000,
+    "description": "Signature verification vulnerability allowed minting of unbacked wETH.",
+    "year": 2022
+  },
+  {
+    "date": "2021-12-16",
+    "name": "Raydium Protocol Hack",
+    "type": "Smart Contract Vulnerability",
+    "loss_usd": 4200000,
+    "description": "Logic flaw in pool management allowed manipulation of withdrawal amounts.",
+    "year": 2021
+  },
+  {
+    "date": "2022-03-23",
+    "name": "Cashio Infinite Mint Exploit",
+    "type": "Smart Contract Vulnerability",
+    "loss_usd": 52000000,
+    "description": "Failed collateral validation allowed minting unlimited CASH stablecoins.",
+    "year": 2022
+  },
+  {
+    "date": "2022-07-02",
+    "name": "Crema Finance Exploit",
+    "type": "Flash Loan Attack",
+    "loss_usd": 8800000,
+    "description": "Reentrancy vulnerability in flash loan implementation exploited.",
+    "year": 2022
+  },
+  {
+    "date": "2022-08-03",
+    "name": "Solana Slope Wallet Compromise",
+    "type": "Private Key Compromise",
+    "loss_usd": 4100000,
+    "description": "Mobile app sent seed phrases to centralized servers in plain text.",
+    "year": 2022
+  },
+  {
+    "date": "2022-10-11",
+    "name": "Mango Markets Price Manipulation",
+    "type": "Oracle Manipulation",
+    "loss_usd": 114000000,
+    "description": "MNGO token price manipulated to drain protocol assets via borrowing.",
+    "year": 2022
+  },
+  {
+    "date": "2023-01-15",
+    "name": "Bonk Token Airdrop Exploits",
+    "type": "Sybil Attack",
+    "loss_usd": 2000000,
+    "description": "Insufficient verification allowed claiming excess airdrop tokens.",
+    "year": 2023
+  },
+  {
+    "date": "2023-02-16",
+    "name": "Platypus Finance Flash Loan Attack",
+    "type": "Flash Loan Attack",
+    "loss_usd": 9100000,
+    "description": "Logic flaw in emergency withdrawal function exploited.",
+    "year": 2023
+  },
+  {
+    "date": "2023-03-13",
+    "name": "Euler Finance Flash Loan Attack",
+    "type": "Flash Loan Attack",
+    "loss_usd": 197000000,
+    "description": "Vulnerability in donateToReserves function combined with flash loans.",
+    "year": 2023
+  },
+  {
+    "date": "2023-04-15",
+    "name": "Solana Network Outage",
+    "type": "Network Consensus Issue",
+    "loss_usd": 0,
+    "description": "Transaction surge triggered consensus bug, causing ~20 hour outage.",
+    "year": 2023
+  },
+  {
+    "date": "2023-07-28",
+    "name": "Nirvana Finance Price Manipulation",
+    "type": "Oracle Manipulation",
+    "loss_usd": 3500000,
+    "description": "Flash loan attack against algorithmic stablecoin design via oracle manipulation.",
+    "year": 2023
+  },
+  {
+    "date": "2023-09-10",
+    "name": "Solend DeFi Protocol Exploit",
+    "type": "Oracle Manipulation",
+    "loss_usd": 1260000,
+    "description": "Insufficient oracle validation allowed price manipulation attack.",
+    "year": 2023
+  }
+]

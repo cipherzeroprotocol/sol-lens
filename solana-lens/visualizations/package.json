@@ -1,0 +1,31 @@
+{
+  "name": "solana-lens-visualizations",
+  "version": "1.0.0",
+  "description": "Visualizations for Solana blockchain data analysis",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1 -p 8080 .",
+    "build": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solana",
+    "blockchain",
+    "visualization",
+    "d3",
+    "observable"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@observablehq/runtime": "^5.8.1",
+    "chart.js": "^4.4.0",
+    "d3": "^7.8.5",
+    "solana-lens-visualizations": "file:"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

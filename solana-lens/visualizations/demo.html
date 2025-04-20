@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolanaLens Visualizations Demo</title>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header {
+      background-color: #131424;
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    
+    .viz-section {
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .viz-container {
+      height: 600px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      margin-right: 5px;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .tab.active {
+      background: white;
+      border-bottom-color: white;
+      position: relative;
+      top: 1px;
+    }
+    
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">SolanaLens</div>
+      <nav>
+        <a href="#notebooks">Notebooks</a>
+        <a href="#d3">D3 Visualizations</a>
+        <a href="#gallery">Gallery</a>
+        <a href="https://github.com/yourusername/solana-lens" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Solana Blockchain Visualization Demo</h1>
+    <p>This page demonstrates the various visualization components available in the SolanaLens project.</p>
+    
+    <section id="notebooks" class="viz-section">
+      <h2>Observable Notebooks</h2>
+      <p>Interactive notebook-style visualizations for analyzing Solana blockchain data.</p>
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="sandwich">Sandwich Attacks</div>
+        <div class="tab" data-tab="dusting">Dusting Analysis</div>
+        <div class="tab" data-tab="token-network">Token Network</div>
+        <div class="tab" data-tab="staking">Staking Dashboard</div>
+      </div>
+      
+      <div id="sandwich-tab" class="tab-content active">
+        <h3>MEV Sandwich Attack Analysis</h3>
+        <p>Visualizes sandwich attacks on Solana DEXs, showing patterns, profits, and affected token pairs.</p>
+        <div class="viz-container" id="sandwich-container"></div>
+      </div>
+      
+      <div id="dusting-tab" class="tab-content">
+        <h3>Dusting Attack Analysis</h3>
+        <p>Analyzes dusting attacks used for tracking and deanonymizing Solana addresses.</p>
+        <div class="viz-container" id="dusting-container"></div>
+      </div>
+      
+      <div id="token-network-tab" class="tab-content">
+        <h3>Token Creator Network</h3>
+        <p>Network visualization showing relationships between token creators and tokens.</p>
+        <div class="viz-container" id="token-network-container"></div>
+      </div>
+      
+      <div id="staking-tab" class="tab-content">
+        <h3>Staking Dashboard</h3>
+        <p>Interactive dashboard showing Solana validator staking metrics and rewards.</p>
+        <div class="viz-container" id="staking-container"></div>
+      </div>
+    </section>
+    
+    <section id="d3" class="viz-section">
+      <h2>D3 Visualizations</h2>
+      <p>Custom D3.js visualizations for specialized analysis needs.</p>
+      
+      <div class="tabs">
+        <div class="tab active" data-tab="ecosystem">Ecosystem Map</div>
+        <div class="tab" data-tab="timeline">Attack Timeline</div>
+      </div>
+      
+      <div id="ecosystem-tab" class="tab-content active">
+        <h3>Solana Ecosystem Map</h3>
+        <p>Interactive map of the Solana ecosystem and project relationships.</p>
+        <div class="viz-container" id="ecosystem-container"></div>
+      </div>
+      
+      <div id="timeline-tab" class="tab-content">
+        <h3>Security Incident Timeline</h3>
+        <p>Timeline visualization of major security incidents affecting Solana.</p>
+        <div class="viz-container" id="timeline-container"></div>
+      </div>
+    </section>
+    
+    <section id="gallery" class="viz-section">
+      <h2>Visualization Gallery</h2>
+      <p>Explore all available visualizations in a gallery format.</p>
+      <div id="gallery-container"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { 
+      VisualizationLoader, 
+      allVisualizations,
+      createVisualizationGallery 
+    } from './index.js';
+    
+    // Handle tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Get the parent tabs container
+        const tabsContainer = tab.parentElement;
+        
+        // Get all tabs in this container and remove active class
+        tabsContainer.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Get the tab content ID based on the tab's data attribute
+        const tabId = `${tab.dataset.tab}-tab`;
+        
+        // Find the parent section
+        const section = tabsContainer.closest('.viz-section');
+        
+        // Hide all tab contents in this section
+        section.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Show the selected tab content
+        document.getElementById(tabId).classList.add('active');
+        
+        // Load visualization if not already loaded
+        const containerId = `${tab.dataset.tab}-container`;
+        const container = document.getElementById(containerId);
+        
+        if (container && !container.dataset.initialized) {
+          loadVisualization(containerId, tab.dataset.tab);
+        }
+      });
+    });
+    
+    // Function to load visualizations
+    function loadVisualization(containerId, vizId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      
+      container.dataset.initialized = 'true';
+      
+      const loader = new VisualizationLoader(container);
+      
+      // Determine visualization type based on ID
+      if (['sandwich', 'dusting', 'token-network', 'staking'].includes(vizId)) {
+        loader.load('notebook', vizId === 'token-network' ? 'token_network' : vizId);
+      } else if (['ecosystem', 'timeline'].includes(vizId)) {
+        const d3Id = vizId === 'ecosystem' ? 'ecosystem_map' : 'attack_timeline';
+        loader.load('d3', d3Id);
+      }
+    }
+    
+    // Initialize visualizations for active tabs
+    document.querySelectorAll('.tab-content.active').forEach(content => {
+      const container = content.querySelector('.viz-container');
+      if (container && !container.dataset.initialized) {
+        const vizId = content.id.replace('-tab', '');
+        loadVisualization(container.id, vizId.replace('-tab', ''));
+      }
+    });
+    
+    // Create visualization gallery
+    const galleryContainer = document.getElementById('gallery-container');
+    if (galleryContainer) {
+      createVisualizationGallery(
+        allVisualizations, 
+        galleryContainer, 
+        (vizId) => {
+          // Handle visualization selection
+          alert(`Selected visualization: ${vizId} - In a real application, this would open the visualization.`);
+        }
+      );
+    }
+  </script>
+</body>
+</html>

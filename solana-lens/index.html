@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolanaLens - Blockchain Analysis Suite</title>
+  
+  <!-- API keys - Replace with your real API keys for production use -->
+  <meta name="helius-api-key" content="demo">
+  <meta name="range-api-key" content="demo">
+  
+  <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <img src="./assets/images/logo.svg" alt="SolanaLens Logo" width="32" height="32">
+        <span>SolanaLens</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./visualizations/index.html">Visualizations</a></li>
+          <li><a href="./reports/index.html">Reports</a></li>
+          <li><a href="./docs/index.html">Documentation</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="container">
+    <section class="hero">
+      <h1>Solana Blockchain Analysis Made Simple</h1>
+      <p>Advanced analytics, visualizations, and security research for the Solana ecosystem</p>
+      <div class="api-status" id="api-status"></div>
+    </section>
+    
+    <section class="features">
+      <h2>Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Security Visualizations</h3>
+          <p>Interactive dashboards for detecting and analyzing security threats</p>
+          <a href="./visualizations/index.html" class="btn">View Visualizations</a>
+        </div>
+        <div class="feature-card">
+          <h3>Research Reports</h3>
+          <p>In-depth analysis of security incidents and trends</p>
+          <a href="./reports/index.html" class="btn">Read Reports</a>
+        </div>
+        <div class="feature-card">
+          <h3>Live Data</h3>
+          <p>Real-time blockchain data analysis with direct API integration</p>
+          <a href="./docs/data-sources.html" class="btn">Learn More</a>
+        </div>
+      </div>
+    </section>
+    
+    <section class="demo">
+      <h2>Set Up API Access</h2>
+      <p>To use real blockchain data, provide your API keys:</p>
+      <form id="api-form">
+        <div class="form-group">
+          <label for="helius-key">Helius API Key:</label>
+          <input type="password" id="helius-key" name="helius-key" placeholder="Enter your Helius API key">
+        </div>
+        <div class="form-group">
+          <label for="range-key">Range API Key:</label>
+          <input type="password" id="range-key" name="range-key" placeholder="Enter your Range API key">
+        </div>
+        <button type="submit" class="btn btn-primary">Save API Keys</button>
+      </form>
+      <p class="note">API keys are stored locally in your browser and never sent to our servers.</p>
+    </section>
+  </main>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; 2023 SolanaLens - Created for the Solana hackathon</p>
+      <div class="social">
+        <a href="https://github.com/username/solana-lens" target="_blank">GitHub</a>
+        <a href="https://twitter.com/SolanaLens" target="_blank">Twitter</a>
+      </div>
+    </div>
+  </footer>
+  
+  <script type="module">
+    import SolanaLens from './index.js';
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check for stored API keys
+      const storedApiKeys = JSON.parse(localStorage.getItem('solana-lens-api-keys') || '{}');
+      
+      // Initialize with stored keys if available
+      SolanaLens.init({
+        apiKeys: {
+          helius: storedApiKeys.helius || document.querySelector('meta[name="helius-api-key"]').getAttribute('content'),
+          range: storedApiKeys.range || document.querySelector('meta[name="range-api-key"]').getAttribute('content')
+        }
+      });
+      
+      // Display API status
+      const apiStatus = document.getElementById('api-status');
+      if (SolanaLens.isUsingRealApis()) {
+        apiStatus.innerHTML = `<span class="status-ok">✅ Using real API data</span>`;
+      } else {
+        apiStatus.innerHTML = `<span class="status-demo">ℹ️ Using demo data (provide API keys for real data)</span>`;
+      }
+      
+      // Handle form submission
+      document.getElementById('api-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get API keys from form
+        const heliusKey = document.getElementById('helius-key').value.trim();
+        const rangeKey = document.getElementById('range-key').value.trim();
+        
+        // Save keys if provided
+        const apiKeys = {};
+        if (heliusKey) apiKeys.helius = heliusKey;
+        if (rangeKey) apiKeys.range = rangeKey;
+        
+        // Store in localStorage
+        localStorage.setItem('solana-lens-api-keys', JSON.stringify(apiKeys));
+        
+        // Reinitialize with new keys
+        SolanaLens.init({ apiKeys });
+        
+        // Update status
+        if (SolanaLens.isUsingRealApis()) {
+          apiStatus.innerHTML = `<span class="status-ok">✅ API keys saved! Using real data</span>`;
+        } else {
+          apiStatus.innerHTML = `<span class="status-demo">ℹ️ Using demo data (provide valid API keys for real data)</span>`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

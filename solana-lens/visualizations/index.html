@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolanaLens Visualizations</title>
+  <link rel="stylesheet" href="./assets/css/styles.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background-color: #0a0b1d;
+      color: white;
+      padding: 10px 0;
+      margin-bottom: 20px;
+    }
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .viz-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .viz-card h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .viz-container {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 30px;
+      min-height: 400px;
+      height: 500px;
+      overflow: auto;
+      margin: 20px 0;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      padding: 10px;
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+      color: #666;
+    }
+    .error {
+      color: #d32f2f;
+      padding: 20px;
+      border-left: 4px solid #d32f2f;
+    }
+    .tab-container {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+    .tab {
+      padding: 8px 16px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      margin-bottom: -1px;
+    }
+    .tab.active {
+      background-color: white;
+      border-color: #ddd;
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">Solana Lens</div>
+      <nav>
+        <a href="#" style="color: white; text-decoration: none; margin-left: 20px;">Documentation</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>SolanaLens Visualizations</h1>
+    <p>
+      This page demonstrates different visualization components for analyzing Solana blockchain data.
+      Click on the tabs to switch between different visualizations.
+    </p>
+
+    <div class="viz-card">
+      <h2>Transaction Analysis</h2>
+      
+      <div class="tab-container">
+        <div class="tab active" data-tab="sandwich">Sandwich Attacks</div>
+        <div class="tab" data-tab="dusting">Dusting Analysis</div>
+      </div>
+      
+      <div class="tab-content active" id="sandwich-content">
+        <p>Visualization of sandwich attacks on Solana DEXs.</p>
+        <div class="viz-container" data-viz-type="notebook" data-viz-subtype="sandwich_attacks"></div>
+      </div>
+      
+      <div class="tab-content" id="dusting-content">
+        <p>Analysis of dusting attack patterns on the Solana network.</p>
+        <div class="viz-container" data-viz-type="notebook" data-viz-subtype="dusting_analysis"></div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <h2>Network Visualizations</h2>
+      
+      <div class="tab-container">
+        <div class="tab active" data-tab="token-network">Token Creator Network</div>
+        <div class="tab" data-tab="ecosystem">Ecosystem Map</div>
+      </div>
+      
+      <div class="tab-content active" id="token-network-content">
+        <p>Interactive network visualization of relationships between token creators and tokens.</p>
+        <div class="viz-container" data-viz-type="d3" data-viz-subtype="token_network"></div>
+      </div>
+      
+      <div class="tab-content" id="ecosystem-content">
+        <p>Map of projects and protocols in the Solana ecosystem.</p>
+        <div class="viz-container" data-viz-type="d3" data-viz-subtype="ecosystem_map"></div>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <h2>Financial Metrics</h2>
+      
+      <div class="tab-container">
+        <div class="tab active" data-tab="staking">Staking Dashboard</div>
+        <div class="tab" data-tab="timeline">Attack Timeline</div>
+      </div>
+      
+      <div class="tab-content active" id="staking-content">
+        <p>Dashboard showing Solana staking statistics and performance.</p>
+        <div class="viz-container" data-viz-type="notebook" data-viz-subtype="staking_dashboard"></div>
+      </div>
+      
+      <div class="tab-content" id="timeline-content">
+        <p>Timeline of security incidents and attacks on Solana protocols.</p>
+        <div class="viz-container" data-viz-type="d3" data-viz-subtype="attack_timeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { VisualizationLoader } from './index.js';
+
+    // Tab switching functionality
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Get parent card
+        const card = tab.closest('.viz-card');
+        
+        // Deactivate all tabs in this card
+        card.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        
+        // Deactivate all tab contents in this card
+        card.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Activate this tab
+        tab.classList.add('active');
+        
+        // Activate corresponding content
+        const tabName = tab.dataset.tab;
+        document.getElementById(`${tabName}-content`).classList.add('active');
+        
+        // Load visualization if not already loaded
+        const vizContainer = document.getElementById(`${tabName}-content`).querySelector('.viz-container');
+        if (!vizContainer.dataset.loaded) {
+          const loader = new VisualizationLoader(vizContainer);
+          loader.load(
+            vizContainer.dataset.vizType,
+            vizContainer.dataset.vizSubtype
+          ).then(() => {
+            vizContainer.dataset.loaded = 'true';
+          });
+        }
+      });
+    });
+
+    // Initialize only the active tab visualizations at start
+    document.querySelectorAll('.tab-content.active .viz-container').forEach(container => {
+      const loader = new VisualizationLoader(container);
+      loader.load(
+        container.dataset.vizType,
+        container.dataset.vizSubtype
+      ).then(() => {
+        container.dataset.loaded = 'true';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+{
+  "name": "Solana Security Monitoring Dashboard",
+  "description": "Dashboard for monitoring security-related metrics like mixer activity and sandwich attacks on Solana.",
+  "widgets": [
+    {
+      "id": "mixer_summary",
+      "name": "Mixer Activity Summary",
+      "description": "Overview of transaction volume and user counts for known Solana mixers.",
+      "query_id": null, 
+      "query_ref": "mixer_detection.sql - Query 1",
+      "visualization": "table",
+      "options": {
+        "columns": [
+          "mixer_label", "mixer_address", "total_transactions", "unique_depositors",
+          "unique_recipients", "total_deposit_usd", "total_withdrawal_usd"
+        ]
+      }
+    },
+    {
+      "id": "suspicious_mixer_cycles",
+      "name": "Potential Mixer Cycles (Deposit -> Withdraw)",
+      "description": "Addresses potentially using mixers with different deposit/withdrawal addresses.",
+      "query_id": null, 
+      "query_ref": "mixer_detection.sql - Query 2",
+      "visualization": "table",
+      "options": {
+        "columns": [
+          "depositor_address", "recipient_address", "mixer_label", "deposit_time",
+          "withdrawal_time", "time_diff", "deposit_usd", "withdrawal_usd"
+        ],
+        "limit": 100
+      }
+    },
+    {
+      "id": "sandwich_attack_summary_attacker",
+      "name": "Top Sandwich Attackers by Profit",
+      "description": "Attackers ranked by total estimated profit from sandwich attacks.",
+      "query_id": null, 
+      "query_ref": "sandwich_attacks.sql - Query 2",
+      "visualization": "bar_chart",
+      "options": {
+        "x_column": "attacker_address",
+        "y_column": "total_profit_usd",
+        "title": "Top Sandwich Attackers by Total Profit (USD)"
+      }
+    },
+    {
+      "id": "sandwich_attack_summary_dex",
+      "name": "Sandwich Attacks by DEX",
+      "description": "Distribution of identified sandwich attacks across different DEXs.",
+      "query_id": null, 
+      "query_ref": "sandwich_attacks.sql - Query 3",
+      "visualization": "pie_chart",
+      "options": {
+        "label_column": "dex_program",
+        "value_column": "attack_count",
+        "title": "Distribution of Sandwich Attacks by DEX"
+      }
+    },
+     {
+      "id": "sandwich_attack_list",
+      "name": "Recent Sandwich Attacks",
+      "description": "List of recently identified potential sandwich attacks.",
+      "query_id": null, 
+      "query_ref": "sandwich_attacks.sql - Query 1",
+      "visualization": "table",
+      "options": {
+        "columns": [
+           "front_run_time", "attacker_address", "victim_address", "dex_program",
+           "sandwiched_token_mint", "profit_usd"
+        ],
+        "limit": 100
+      }
+    }
+  ]
+}
