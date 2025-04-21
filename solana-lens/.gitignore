@@ -1,0 +1,11 @@
+# Ignore parent directory files
+../*/
+../*.* 
+
+# Normal node ignores
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+*.log
